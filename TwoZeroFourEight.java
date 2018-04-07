@@ -12,22 +12,37 @@ public class TwoZeroFourEight {
     private Dashboard dashboard;
     private boolean victorious;
     private boolean defeated;
+    private final int gridSize;
 
     public static void main(String[] args) {
         TwoZeroFourEight tzfe = new TwoZeroFourEight();
-        tzfe.newGame();
+        tzfe.start();
+    }
+
+    public TwoZeroFourEight() {
+        this.gridSize = 6;
     }
     
-    private void newGame() {
+    private void start() {
         victorious = false;
         defeated = false;
-        grid = new Grid(4);
+        grid = new Grid(gridSize);
         grid.setup();
         dashboard = new Dashboard();
         dashboard.setup(actionHandler);
         window = new Window();
         window.setup(grid, dashboard);
         window.addKeyListener(keyAdapter);
+        window.requestFocus();
+    }
+    
+    private void newGame() {
+        victorious = false;
+        defeated = false;
+        window.remove(grid);
+        grid = new Grid(gridSize);
+        grid.setup();
+        window.setGrid(grid);
         window.requestFocus();
     }
     

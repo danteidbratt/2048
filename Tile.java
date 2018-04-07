@@ -31,10 +31,6 @@ public class Tile extends JLabel {
         return level;
     }
 
-    public void setValue(int value) {
-        this.level = value;
-    }
-    
     public void activate(int level) {
         this.level = level;
         setText((int)Math.pow(2, level));

@@ -16,7 +16,7 @@ public final class Grid extends JPanel {
     }
 
     public void setup() {
-        setLayout(new GridLayout(4, 4, 10, 10));
+        setLayout(new GridLayout(gridSize, gridSize, 10, 10));
         setBackground(new Color(30, 30, 30));
         setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
         setPreferredSize(new Dimension(500, 500));
@@ -46,7 +46,7 @@ public final class Grid extends JPanel {
 
     public void handleInput(String input) {
         if (checkIfAllowed(input)) {
-            scanGrid(input);
+            processGrid(input);
         }
     }
 
@@ -68,28 +68,23 @@ public final class Grid extends JPanel {
         }
         return false;
     }
-
-    public void scanGrid(String input) {
+    
+    public void processGrid(String input) {
         boolean up = input.equals("up");
         boolean down = input.equals("down");
         boolean left = input.equals("left");
         Tile[] line = new Tile[gridSize];
         for (int i = 0; i < gridSize; i++) {
             for (int j = 0; j < gridSize; j++) {
-                line[j] = tiles[(up || down
-                        ? (up || left
-                                ? j : gridSize - (j + 1)) : (up || left
-                                ? i : gridSize - (i + 1)))][(up || down
-                                ? (up || left
-                                        ? i : gridSize - (i + 1)) : (up || left
-                                        ? j : gridSize - (j + 1)))];
+                line[j] = tiles[(up || down ? (up || left ? j : gridSize - (j + 1)) : (up || left ? i : gridSize - (i + 1)))]
+                               [(up || down ? (up || left ? i : gridSize - (i + 1)) : (up || left ? j : gridSize - (j + 1)))];
             }
-            handleLine(line);
+            processLine(line);
         }
         activateRandomTile();
     }
 
-    private void handleLine(Tile[] line) {
+    private void processLine(Tile[] line) {
         List<Integer> values = new ArrayList<>();
         for (int i = 0; i < line.length; i++) {
             if (!line[i].getText().equals("")) {

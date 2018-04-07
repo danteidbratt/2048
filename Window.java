@@ -5,6 +5,7 @@ import javax.swing.JFrame;
 
 public class Window extends JFrame {
     
+    
     public void setup(Grid grid, Dashboard dashboard) {
         setTitle("2048");
         setLayout(new BorderLayout());
@@ -17,5 +18,11 @@ public class Window extends JFrame {
         repaint();
         setVisible(true);
         setFocusable(true);
+    }
+    
+    public void setGrid(Grid newGrid) {
+        add(newGrid, BorderLayout.CENTER);
+        revalidate();
+        repaint();
     }
 }
