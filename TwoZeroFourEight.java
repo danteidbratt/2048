@@ -37,7 +37,13 @@ public final class TwoZeroFourEight {
         grid = new Grid(gridSize, levelGoal);
         grid.setup(increment);
         dashboard = new Dashboard();
-        dashboard.setup(actionHandler);
+        dashboard.setup();
+        dashboard.getNewGameButton().addActionListener((x) -> {
+            newGame();
+        });
+        dashboard.getExitGameButton().addActionListener((x) -> {
+            System.exit(0);
+        });
         window = new Window();
         window.setup(grid, dashboard, String.valueOf(increment.apply(levelGoal)));
         window.addKeyListener(keyAdapter);
@@ -100,12 +106,4 @@ public final class TwoZeroFourEight {
             }
         }
     };
-
-    ActionListener actionHandler = ((x) -> {
-        if (x.getSource() == dashboard.getNewGameButton()) {
-            newGame();
-        } else if (x.getSource() == dashboard.getExitGameButton()) {
-            System.exit(0);
-        }
-    });
 }
