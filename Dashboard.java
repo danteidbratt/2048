@@ -17,14 +17,14 @@ public class Dashboard extends JPanel{
     public void setup(ActionListener al) {
         setLayout(new GridLayout(1, 2, 30, 0));
         setBackground(new Color(30, 30, 30));
-        setBorder(BorderFactory.createEmptyBorder(10, 20, 20, 20));
+        setBorder(BorderFactory.createEmptyBorder(0, 20, 20, 20));
         newGameButton.setFont(new Font("SansSerif", 1, 30));
         exitGameButton.setFont(new Font("SansSerif", 1, 30));
         newGameButton.addActionListener(al);
         exitGameButton.addActionListener(al);
         add(newGameButton);
         add(exitGameButton);
-        setPreferredSize(new Dimension(0, 100));
+        setPreferredSize(new Dimension(0, 80));
     }
 
     public JButton getNewGameButton() {
