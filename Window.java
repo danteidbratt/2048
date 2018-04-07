@@ -16,6 +16,7 @@ public final class Window extends JFrame {
         setLocationRelativeTo(null);
         revalidate();
         repaint();
+        setResizable(false);
         setVisible(true);
         setFocusable(true);
     }

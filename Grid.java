@@ -91,7 +91,7 @@ public final class Grid extends JPanel {
     private void processLine(Tile[] line) {
         List<Integer> values = new ArrayList<>();
         for (int i = 0; i < line.length; i++) {
-            if (!line[i].getText().equals("")) {
+            if (line[i].isActive()) {
                 values.add(line[i].getValue());
             }
             line[i].deactivate();
