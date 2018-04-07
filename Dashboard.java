@@ -4,7 +4,7 @@ import java.awt.*;
 import java.awt.event.ActionListener;
 import javax.swing.*;
 
-public class Dashboard extends JPanel{
+public final class Dashboard extends JPanel{
     
     private final JButton newGameButton;
     private final JButton exitGameButton;

@@ -4,15 +4,17 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import javax.swing.JOptionPane;
+import static twozerofoureight.Direction.*;
 
-public class TwoZeroFourEight {
-    
+public final class TwoZeroFourEight {
+
     private Window window;
     private Grid grid;
     private Dashboard dashboard;
     private boolean victorious;
     private boolean defeated;
     private final int gridSize;
+    private final int levelGoal;
 
     public static void main(String[] args) {
         TwoZeroFourEight tzfe = new TwoZeroFourEight();
@@ -20,13 +22,14 @@ public class TwoZeroFourEight {
     }
 
     public TwoZeroFourEight() {
-        this.gridSize = 6;
+        gridSize = 4;
+        levelGoal = 11;
     }
-    
+
     private void start() {
         victorious = false;
         defeated = false;
-        grid = new Grid(gridSize);
+        grid = new Grid(gridSize, levelGoal);
         grid.setup();
         dashboard = new Dashboard();
         dashboard.setup(actionHandler);
@@ -35,46 +38,60 @@ public class TwoZeroFourEight {
         window.addKeyListener(keyAdapter);
         window.requestFocus();
     }
-    
+
     private void newGame() {
         victorious = false;
         defeated = false;
         window.remove(grid);
-        grid = new Grid(gridSize);
+        grid = new Grid(gridSize, levelGoal);
         grid.setup();
         window.setGrid(grid);
         window.requestFocus();
     }
     
+    private void checkIfGameOver() {
+        if (!victorious && grid.checkIfVictory()) {
+            victorious = true;
+            JOptionPane.showMessageDialog(null, "You Win!");
+        }
+        if (!defeated && grid.checkIfFull()) {
+            if (!grid.checkIfAllowed(UP)
+                    && !grid.checkIfAllowed(DOWN)
+                    && !grid.checkIfAllowed(LEFT)
+                    && !grid.checkIfAllowed(RIGHT)) {
+                defeated = true;
+                JOptionPane.showMessageDialog(null, "You Lose");
+            }
+        }
+    }
+
     KeyAdapter keyAdapter = new KeyAdapter() {
         @Override
         public void keyPressed(KeyEvent e) {
-            switch(e.getKeyCode()) {
+            Direction direction = NONE;
+            switch (e.getKeyCode()) {
                 case KeyEvent.VK_UP:
-                    grid.handleInput("up");
+                case KeyEvent.VK_W:
+                    direction = UP;
                     break;
                 case KeyEvent.VK_DOWN:
-                    grid.handleInput("down");
+                case KeyEvent.VK_S:
+                    direction = DOWN;
                     break;
                 case KeyEvent.VK_LEFT:
-                    grid.handleInput("left");
+                case KeyEvent.VK_A:
+                    direction = LEFT;
                     break;
                 case KeyEvent.VK_RIGHT:
-                    grid.handleInput("right");
+                case KeyEvent.VK_D:
+                    direction = RIGHT;
+                    break;
+                default:
                     break;
             }
-            if(!victorious && grid.checkIfVictory()) {
-                victorious = true;
-                JOptionPane.showMessageDialog(null, "You Win!");
-            }
-            if(!defeated && grid.checkIfFull()) {
-                if(!grid.checkIfAllowed("up") &&
-                   !grid.checkIfAllowed("down") &&
-                   !grid.checkIfAllowed("left") &&
-                   !grid.checkIfAllowed("right")) {
-                    defeated = true;
-                    JOptionPane.showMessageDialog(null, "You Lose");
-                }
+            if (direction != NONE) {
+                grid.handleInput(direction);
+                checkIfGameOver();
             }
         }
     };
@@ -82,8 +99,7 @@ public class TwoZeroFourEight {
     ActionListener actionHandler = ((x) -> {
         if (x.getSource() == dashboard.getNewGameButton()) {
             newGame();
-        }
-        else if (x.getSource() == dashboard.getExitGameButton()) {
+        } else if (x.getSource() == dashboard.getExitGameButton()) {
             System.exit(0);
         }
     });

@@ -3,7 +3,7 @@ package twozerofoureight;
 import java.awt.BorderLayout;
 import javax.swing.JFrame;
 
-public class Window extends JFrame {
+public final class Window extends JFrame {
     
     
     public void setup(Grid grid, Dashboard dashboard) {

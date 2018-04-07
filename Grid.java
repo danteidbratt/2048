@@ -4,15 +4,18 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.*;
+import static twozerofoureight.Direction.*;
 
 public final class Grid extends JPanel {
 
     private final Tile[][] tiles;
     private final int gridSize;
+    private final int levelGoal;
 
-    public Grid(int gridSize) {
+    public Grid(int gridSize, int levelGoal) {
         this.gridSize = gridSize;
         this.tiles = new Tile[gridSize][gridSize];
+        this.levelGoal = levelGoal;
     }
 
     public void setup() {
@@ -44,17 +47,17 @@ public final class Grid extends JPanel {
         }
     }
 
-    public void handleInput(String input) {
-        if (checkIfAllowed(input)) {
-            processGrid(input);
+    public void handleInput(Direction direction) {
+        if (checkIfAllowed(direction)) {
+            processGrid(direction);
         }
     }
 
-    public boolean checkIfAllowed(String input) {
-        int u = input.equals("up") ? 1 : 0;
-        int d = input.equals("down") ? 1 : 0;
-        int l = input.equals("left") ? 1 : 0;
-        int r = input.equals("right") ? 1 : 0;
+    public boolean checkIfAllowed(Direction direction) {
+        int u = direction == UP ? 1 : 0;
+        int d = direction == DOWN ? 1 : 0;
+        int l = direction == LEFT ? 1 : 0;
+        int r = direction == RIGHT ? 1 : 0;
         
         for (int i = (0 + u); i < gridSize - (0 + d); i++) {
             for (int j = (0 + l); j < gridSize - (0 + r); j++) {
@@ -69,10 +72,10 @@ public final class Grid extends JPanel {
         return false;
     }
     
-    public void processGrid(String input) {
-        boolean up = input.equals("up");
-        boolean down = input.equals("down");
-        boolean left = input.equals("left");
+    public void processGrid(Direction direction) {
+        boolean up = direction == UP;
+        boolean down = direction == DOWN;
+        boolean left = direction == LEFT;
         Tile[] line = new Tile[gridSize];
         for (int i = 0; i < gridSize; i++) {
             for (int j = 0; j < gridSize; j++) {
@@ -109,7 +112,7 @@ public final class Grid extends JPanel {
     public boolean checkIfVictory() {
         for (Tile[] row : tiles) {
             for (Tile tile : row) {
-                if(tile.getValue() == 11) {
+                if(tile.getValue() == levelGoal) {
                     return true;
                 }
             }

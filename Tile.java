@@ -4,7 +4,7 @@ import java.awt.Color;
 import java.awt.Font;
 import javax.swing.*;
 
-public class Tile extends JLabel {
+public final class Tile extends JLabel {
     
     private boolean active;
     private int level;
