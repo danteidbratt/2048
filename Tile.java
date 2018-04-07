@@ -9,11 +9,11 @@ public final class Tile extends JLabel {
     
     private boolean active;
     private int level;
-    private final Function f;
+    private final Function increment;
 
-    public Tile(Function f) {
+    public Tile(Function increment) {
         level = 0;
-        this.f = f;
+        this.increment = increment;
     }
     
     public void setup() {
@@ -36,7 +36,7 @@ public final class Tile extends JLabel {
 
     public void activate(int level) {
         this.level = level;
-        setText((int)f.apply(level));
+        setText((int)increment.apply(level));
         setBackground(new Color(0, 50 + (level * 10),50 + (level * 10)));
         active = true;
     }

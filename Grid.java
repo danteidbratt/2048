@@ -19,14 +19,14 @@ public final class Grid extends JPanel {
         this.levelGoal = levelGoal;
     }
 
-    public void setup(Function f) {
+    public void setup(Function increment) {
         setLayout(new GridLayout(gridSize, gridSize, 10, 10));
         setBackground(new Color(30, 30, 30));
         setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
         setPreferredSize(new Dimension(500, 500));
         for (int i = 0; i < tiles.length; i++) {
             for (int j = 0; j < tiles[i].length; j++) {
-                tiles[i][j] = new Tile(f);
+                tiles[i][j] = new Tile(increment);
                 tiles[i][j].setup();
                 add(tiles[i][j]);
             }
