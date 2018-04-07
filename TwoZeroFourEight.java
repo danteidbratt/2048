@@ -3,6 +3,7 @@ package twozerofoureight;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.util.function.Function;
 import javax.swing.JOptionPane;
 import static twozerofoureight.Direction.*;
 
@@ -15,6 +16,7 @@ public final class TwoZeroFourEight {
     private boolean defeated;
     private final int gridSize;
     private final int levelGoal;
+    private final Function increment;
 
     public static void main(String[] args) {
         TwoZeroFourEight tzfe = new TwoZeroFourEight();
@@ -24,17 +26,20 @@ public final class TwoZeroFourEight {
     public TwoZeroFourEight() {
         gridSize = 4;
         levelGoal = 11;
+        increment = ((x) -> {
+            return (int)Math.pow(2, (int)x);
+        });
     }
 
     private void start() {
         victorious = false;
         defeated = false;
         grid = new Grid(gridSize, levelGoal);
-        grid.setup();
+        grid.setup(increment);
         dashboard = new Dashboard();
         dashboard.setup(actionHandler);
         window = new Window();
-        window.setup(grid, dashboard);
+        window.setup(grid, dashboard, String.valueOf(increment.apply(levelGoal)));
         window.addKeyListener(keyAdapter);
         window.requestFocus();
     }
@@ -44,7 +49,7 @@ public final class TwoZeroFourEight {
         defeated = false;
         window.remove(grid);
         grid = new Grid(gridSize, levelGoal);
-        grid.setup();
+        grid.setup(increment);
         window.setGrid(grid);
         window.requestFocus();
     }

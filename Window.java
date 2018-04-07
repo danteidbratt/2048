@@ -6,8 +6,8 @@ import javax.swing.JFrame;
 public final class Window extends JFrame {
     
     
-    public void setup(Grid grid, Dashboard dashboard) {
-        setTitle("2048");
+    public void setup(Grid grid, Dashboard dashboard, String title) {
+        setTitle(title);
         setLayout(new BorderLayout());
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         add(grid, BorderLayout.CENTER);

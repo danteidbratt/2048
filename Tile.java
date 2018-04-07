@@ -2,15 +2,18 @@ package twozerofoureight;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.util.function.Function;
 import javax.swing.*;
 
 public final class Tile extends JLabel {
     
     private boolean active;
     private int level;
+    private final Function f;
 
-    public Tile() {
+    public Tile(Function f) {
         level = 0;
+        this.f = f;
     }
     
     public void setup() {
@@ -33,7 +36,7 @@ public final class Tile extends JLabel {
 
     public void activate(int level) {
         this.level = level;
-        setText((int)Math.pow(2, level));
+        setText((int)f.apply(level));
         setBackground(new Color(0, 50 + (level * 10),50 + (level * 10)));
         active = true;
     }
