@@ -38,12 +38,8 @@ public final class TwoZeroFourEight {
         grid.setup(increment);
         dashboard = new Dashboard();
         dashboard.setup();
-        dashboard.getNewGameButton().addActionListener((x) -> {
-            newGame();
-        });
-        dashboard.getExitGameButton().addActionListener((x) -> {
-            System.exit(0);
-        });
+        dashboard.getNewGameButton().addActionListener(e -> newGame());
+        dashboard.getExitGameButton().addActionListener(e -> System.exit(0));
         window = new Window();
         window.setup(grid, dashboard, String.valueOf(increment.apply(levelGoal)));
         window.addKeyListener(keyAdapter);
