@@ -18,7 +18,7 @@ public final class Grid extends JPanel {
     public void setup() {
         setLayout(new GridLayout(4, 4, 10, 10));
         setBackground(new Color(30, 30, 30));
-        setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
         setPreferredSize(new Dimension(500, 500));
         for (int i = 0; i < tiles.length; i++) {
             for (int j = 0; j < tiles[i].length; j++) {
