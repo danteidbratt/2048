@@ -32,8 +32,7 @@ public final class Grid extends JPanel {
     }
 
     public void setup(Color backgroundColor) {
-        String topScore = repository.getTopScore();
-        topScoreLabel.setText(topScore == null ? "0" : topScore);
+        topScoreLabel.setText(repository.getTopScore());
         currentScoreLabel.setText("0");
         victorious = false;
         defeated = false;
@@ -139,9 +138,6 @@ public final class Grid extends JPanel {
         }
         if (checkIfDefeat()) {
             String topScore = repository.getTopScore();
-            if(topScore == null) {
-                topScore = "0";
-            }
             System.out.println(Integer.parseInt(topScore));
             if (currentScore > Integer.parseInt(topScore)) {
                 JOptionPane.showMessageDialog(null, "New Highscore!");

@@ -24,8 +24,8 @@ public final class TwoZeroFourEight {
     }
 
     public TwoZeroFourEight() {
-        gridSize = 2;
-        levelGoal = 11;
+        gridSize = 5;
+        levelGoal = 8;
         increment = (x -> {
             return (int) Math.pow(2, x);
         });

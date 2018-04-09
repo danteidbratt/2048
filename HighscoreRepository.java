@@ -13,9 +13,9 @@ public class HighscoreRepository {
     }
 
     public String getTopScore() {
+        String topScore = "0";
         try {
             if (file.exists()) {
-                String topScore = "0";
                 BufferedReader buf = new BufferedReader(new FileReader(file));
                 String temp;
                 while ((temp = buf.readLine()) != null) {
@@ -24,12 +24,11 @@ public class HighscoreRepository {
                     }
                 }
                 buf.close();
-                return topScore;
             }
         } catch (IOException ex) {
             ex.printStackTrace();
         }
-        return null;
+        return topScore;
     }
 
     public void save(String highscore) {
