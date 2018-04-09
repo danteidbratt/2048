@@ -37,7 +37,7 @@ public final class Tile extends JLabel {
     public void activate(int level) {
         this.level = level;
         setText((int)increment.apply(level));
-        setBackground(new Color(0, 50 + (level * 10),50 + (level * 10)));
+        setBackground(new Color(150 - (level * 7), 0 + (level * 8), 40 + (level * 12)));
         active = true;
     }
     

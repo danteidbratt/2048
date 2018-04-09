@@ -138,7 +138,6 @@ public final class Grid extends JPanel {
         }
         if (checkIfDefeat()) {
             String topScore = repository.getTopScore();
-            System.out.println(Integer.parseInt(topScore));
             if (currentScore > Integer.parseInt(topScore)) {
                 JOptionPane.showMessageDialog(null, "New Highscore!");
                 topScoreLabel.setText(String.valueOf(currentScore));
