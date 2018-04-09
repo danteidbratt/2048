@@ -24,7 +24,7 @@ public final class TwoZeroFourEight {
     }
 
     public TwoZeroFourEight() {
-        gridSize = 5;
+        gridSize = 2;
         levelGoal = 11;
         increment = (x -> {
             return (int) Math.pow(2, x);
@@ -33,12 +33,9 @@ public final class TwoZeroFourEight {
     }
 
     private void start() {
-        HighscoreRepository hsr = new HighscoreRepository();
-        hsr.save("12345");
-        hsr.save("6543");
-        highscorePanel = new HighscorePanel("1337");
+        highscorePanel = new HighscorePanel();
         highscorePanel.setup(backgroundColor);
-        grid = new Grid(gridSize, levelGoal, increment, highscorePanel.getCurrentScoreLabel());
+        grid = new Grid(gridSize, levelGoal, increment, highscorePanel.getCurrentScoreLabel(), highscorePanel.getTopScoreLabel());
         grid.setup(backgroundColor);
         dashboard = new Dashboard();
         dashboard.setup(backgroundColor);
@@ -62,7 +59,7 @@ public final class TwoZeroFourEight {
 
     private void newGame() {
         window.remove(grid);
-        grid = new Grid(gridSize, levelGoal, increment, highscorePanel.getCurrentScoreLabel());
+        grid = new Grid(gridSize, levelGoal, increment, highscorePanel.getCurrentScoreLabel(), highscorePanel.getTopScoreLabel());
         grid.setup(backgroundColor);
         window.setGrid(grid);
         window.requestFocus();

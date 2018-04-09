@@ -14,20 +14,27 @@ public final class Grid extends JPanel {
     private final int levelGoal;
     private boolean victorious;
     private boolean defeated;
-    private JLabel currentScoreLabel;
+    private final JLabel currentScoreLabel;
+    private final JLabel topScoreLabel;
+    private final HighscoreRepository repository;
     private int currentScore;
-    private Function<Integer, Integer> increment;
+    private final Function<Integer, Integer> increment;
 
-    public Grid(int gridSize, int levelGoal, Function increment, JLabel scoreLabel) {
+    public Grid(int gridSize, int levelGoal, Function increment, JLabel currentScoreLabel, JLabel topScoreLabel) {
         this.gridSize = gridSize;
         this.tiles = new Tile[gridSize][gridSize];
         this.levelGoal = levelGoal;
         this.increment = increment;
-        this.currentScoreLabel = scoreLabel;
+        this.currentScoreLabel = currentScoreLabel;
+        this.topScoreLabel = topScoreLabel;
+        repository = new HighscoreRepository(gridSize);
         currentScore = 0;
     }
 
     public void setup(Color backgroundColor) {
+        String topScore = repository.getTopScore();
+        topScoreLabel.setText(topScore == null ? "0" : topScore);
+        currentScoreLabel.setText("0");
         victorious = false;
         defeated = false;
         setLayout(new GridLayout(gridSize, gridSize, 10, 10));
@@ -61,8 +68,8 @@ public final class Grid extends JPanel {
     public boolean handleInput(Direction direction) {
         if (checkIfAllowed(direction)) {
             processGrid(direction);
-            checkIfGameOver();
             currentScoreLabel.setText(String.valueOf(currentScore));
+            checkIfGameOver();
             return true;
         }
         return false;
@@ -125,16 +132,27 @@ public final class Grid extends JPanel {
             }
         }
     }
-    
+
     public void checkIfGameOver() {
         if (checkIfVictory()) {
             JOptionPane.showMessageDialog(null, "You Win!");
         }
         if (checkIfDefeat()) {
-            JOptionPane.showMessageDialog(null, "You Lose");
+            String topScore = repository.getTopScore();
+            if(topScore == null) {
+                topScore = "0";
+            }
+            System.out.println(Integer.parseInt(topScore));
+            if (currentScore > Integer.parseInt(topScore)) {
+                JOptionPane.showMessageDialog(null, "New Highscore!");
+                topScoreLabel.setText(String.valueOf(currentScore));
+            } else {
+                JOptionPane.showMessageDialog(null, "You Lose");
+            }
+            repository.save(String.valueOf(currentScore));
         }
     }
-    
+
     private boolean checkIfVictory() {
         if (!victorious) {
             for (Tile[] row : tiles) {
@@ -162,7 +180,7 @@ public final class Grid extends JPanel {
     }
 
     private boolean checkIfDefeat() {
-        if(!defeated
+        if (!defeated
                 && checkIfFull()
                 && !checkIfAllowed(UP)
                 && !checkIfAllowed(DOWN)
@@ -190,5 +208,5 @@ public final class Grid extends JPanel {
     public int getCurrentScore() {
         return currentScore;
     }
-    
+
 }
