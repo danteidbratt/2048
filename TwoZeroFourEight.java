@@ -1,9 +1,9 @@
 package twozerofoureight;
 
+import java.awt.Color;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.function.Function;
-import javax.swing.JOptionPane;
 import static twozerofoureight.Direction.*;
 
 public final class TwoZeroFourEight {
@@ -11,11 +11,12 @@ public final class TwoZeroFourEight {
     private Window window;
     private Grid grid;
     private Dashboard dashboard;
-    private boolean victorious;
-    private boolean defeated;
+    private HighscorePanel highscorePanel;
     private final int gridSize;
     private final int levelGoal;
-    private final Function increment;
+    private final Function<Integer, Integer> increment;
+    private Bot bot;
+    private final Color backgroundColor;
 
     public static void main(String[] args) {
         TwoZeroFourEight tzfe = new TwoZeroFourEight();
@@ -23,52 +24,48 @@ public final class TwoZeroFourEight {
     }
 
     public TwoZeroFourEight() {
-        gridSize = 4;
+        gridSize = 5;
         levelGoal = 11;
-        increment = ((x) -> {
-            return (int)Math.pow(2, (int)x);
+        increment = (x -> {
+            return (int) Math.pow(2, x);
         });
+        backgroundColor = new Color(30, 30, 30);
     }
 
     private void start() {
-        victorious = false;
-        defeated = false;
-        grid = new Grid(gridSize, levelGoal);
-        grid.setup(increment);
+        HighscoreRepository hsr = new HighscoreRepository();
+        hsr.save("12345");
+        hsr.save("6543");
+        highscorePanel = new HighscorePanel("1337");
+        highscorePanel.setup(backgroundColor);
+        grid = new Grid(gridSize, levelGoal, increment, highscorePanel.getCurrentScoreLabel());
+        grid.setup(backgroundColor);
         dashboard = new Dashboard();
-        dashboard.setup();
+        dashboard.setup(backgroundColor);
         dashboard.getNewGameButton().addActionListener(e -> newGame());
         dashboard.getExitGameButton().addActionListener(e -> System.exit(0));
+        dashboard.getAutoButton().addActionListener(e -> {
+            if (dashboard.getAutoButton().getText().equals("Auto") && !grid.isDefeated()) {
+                bot = new Bot(grid, dashboard.getAutoButton());
+                bot.start();
+            } else {
+                bot.killBot();
+            }
+            window.requestFocus();
+        });
         window = new Window();
-        window.setup(grid, dashboard, String.valueOf(increment.apply(levelGoal)));
+        window.setup(grid, dashboard, highscorePanel, String.valueOf(increment.apply(levelGoal)));
         window.addKeyListener(keyAdapter);
         window.requestFocus();
+        bot = new Bot();
     }
 
     private void newGame() {
-        victorious = false;
-        defeated = false;
         window.remove(grid);
-        grid = new Grid(gridSize, levelGoal);
-        grid.setup(increment);
+        grid = new Grid(gridSize, levelGoal, increment, highscorePanel.getCurrentScoreLabel());
+        grid.setup(backgroundColor);
         window.setGrid(grid);
         window.requestFocus();
-    }
-    
-    private void checkIfGameOver() {
-        if (!victorious && grid.checkIfVictory()) {
-            victorious = true;
-            JOptionPane.showMessageDialog(null, "You Win!");
-        }
-        if (!defeated && grid.checkIfFull()) {
-            if (!grid.checkIfAllowed(UP)
-                    && !grid.checkIfAllowed(DOWN)
-                    && !grid.checkIfAllowed(LEFT)
-                    && !grid.checkIfAllowed(RIGHT)) {
-                defeated = true;
-                JOptionPane.showMessageDialog(null, "You Lose");
-            }
-        }
     }
 
     KeyAdapter keyAdapter = new KeyAdapter() {
@@ -92,12 +89,13 @@ public final class TwoZeroFourEight {
                 case KeyEvent.VK_D:
                     direction = RIGHT;
                     break;
+                case KeyEvent.VK_SPACE:
+                    dashboard.getAutoButton().doClick();
                 default:
                     break;
             }
             if (direction != NONE) {
                 grid.handleInput(direction);
-                checkIfGameOver();
             }
         }
     };

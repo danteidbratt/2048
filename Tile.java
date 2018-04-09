@@ -9,7 +9,7 @@ public final class Tile extends JLabel {
     
     private boolean active;
     private int level;
-    private final Function increment;
+    private final Function<Integer, Integer> increment;
 
     public Tile(Function increment) {
         level = 0;
