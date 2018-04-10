@@ -65,7 +65,7 @@ public final class Grid extends JPanel {
     }
 
     public boolean handleInput(Direction direction) {
-        if (checkIfAllowed(direction)) {
+        if (isAllowed(direction)) {
             processGrid(direction);
             currentScoreLabel.setText(String.valueOf(currentScore));
             checkIfGameOver();
@@ -74,7 +74,7 @@ public final class Grid extends JPanel {
         return false;
     }
 
-    public boolean checkIfAllowed(Direction direction) {
+    public boolean isAllowed(Direction direction) {
         int u = direction == UP ? 1 : 0;
         int d = direction == DOWN ? 1 : 0;
         int l = direction == LEFT ? 1 : 0;
@@ -177,10 +177,10 @@ public final class Grid extends JPanel {
     private boolean checkIfDefeat() {
         if (!defeated
                 && checkIfFull()
-                && !checkIfAllowed(UP)
-                && !checkIfAllowed(DOWN)
-                && !checkIfAllowed(LEFT)
-                && !checkIfAllowed(RIGHT)) {
+                && !isAllowed(UP)
+                && !isAllowed(DOWN)
+                && !isAllowed(LEFT)
+                && !isAllowed(RIGHT)) {
             Bot.killBot();
             defeated = true;
             return true;
@@ -202,6 +202,22 @@ public final class Grid extends JPanel {
 
     public int getCurrentScore() {
         return currentScore;
+    }
+
+    public int getNumberOfFilledRows() {
+        for (int i = 0; i < tiles.length; i++) {
+            boolean full = true;
+            for (int j = 0; j < tiles[i].length - 1; j++) {
+                if (!tiles[i][j].isActive() || tiles[i][j].getValue() == tiles[i][j+1].getValue()) {
+                    full = false;
+                    break;
+                }
+            }
+            if (!full) {
+                return i;
+            }
+        }
+        return 3;
     }
 
 }

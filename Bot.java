@@ -40,7 +40,7 @@ public class Bot extends Thread implements Runnable {
                     break;
                 }
                 if (running) {
-                    if (!grid.checkIfAllowed(UP) && !grid.checkIfAllowed(LEFT)) {
+                    if (!grid.isAllowed(UP) && !grid.isAllowed(LEFT)) {
                         if (grid.handleInput(DOWN) || grid.handleInput(RIGHT)) {
                             Thread.sleep(100);
                         }

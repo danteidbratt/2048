@@ -18,7 +18,7 @@ public final class Tile extends JLabel {
     
     public void setup() {
         setFont(new Font("SansSerif", 1, 35));
-        setBorder(BorderFactory.createLineBorder(Color.WHITE, 1));
+        setBorder(BorderFactory.createLineBorder(new Color(100, 100, 100), 1));
         setHorizontalAlignment(0);
         setBackground(new Color(40, 40, 40));
         setOpaque(true);
