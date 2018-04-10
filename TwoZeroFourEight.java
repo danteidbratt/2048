@@ -3,6 +3,7 @@ package twozerofoureight;
 import java.awt.Color;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import static java.awt.event.KeyEvent.*;
 import java.util.function.Function;
 import static twozerofoureight.Direction.*;
 
@@ -24,8 +25,8 @@ public final class TwoZeroFourEight {
     }
 
     public TwoZeroFourEight() {
-        gridSize = 5;
-        levelGoal = 8;
+        gridSize = 4;
+        levelGoal = 11;
         increment = (x -> {
             return (int) Math.pow(2, x);
         });
@@ -70,24 +71,28 @@ public final class TwoZeroFourEight {
         public void keyPressed(KeyEvent e) {
             Direction direction = NONE;
             switch (e.getKeyCode()) {
-                case KeyEvent.VK_UP:
-                case KeyEvent.VK_W:
+                case VK_UP:
+                case VK_W:
                     direction = UP;
                     break;
-                case KeyEvent.VK_DOWN:
-                case KeyEvent.VK_S:
+                case VK_DOWN:
+                case VK_S:
                     direction = DOWN;
                     break;
-                case KeyEvent.VK_LEFT:
-                case KeyEvent.VK_A:
+                case VK_LEFT:
+                case VK_A:
                     direction = LEFT;
                     break;
-                case KeyEvent.VK_RIGHT:
-                case KeyEvent.VK_D:
+                case VK_RIGHT:
+                case VK_D:
                     direction = RIGHT;
                     break;
-                case KeyEvent.VK_SPACE:
-                    dashboard.getAutoButton().doClick();
+                case VK_SPACE:
+                    if(grid.isDefeated()) {
+                        newGame();
+                    } else {
+                        dashboard.getAutoButton().doClick();
+                    }
                 default:
                     break;
             }
